@@ -1,8 +1,17 @@
+
+
 export default {
     //单页面 page
-    singular:true,
-    routes:[{
-            path:'/',
-        component:'./HelloWorld',
+    singular: true,
+    antd: {
+
+    },
+    routes: [{
+        path: '/',
+        component: '../layout',
+        routes: [{
+            path: '/',
+            component: './HelloWorld',
+        }]
     }],
-    }
+}
