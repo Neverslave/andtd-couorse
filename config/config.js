@@ -9,6 +9,11 @@ export default {
             path: '/',
             component: './HelloWorld',
         }, {
+            path:'puzzlecards',
+            component:'puzzlecards'
+
+        },
+        {
             path: '/dashboard',
             routes: [{
                     path: 'analysis',
