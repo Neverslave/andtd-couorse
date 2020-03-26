@@ -12,6 +12,9 @@ export default {
             path:'puzzlecards',
             component:'puzzlecards'
 
+        },{
+            path:'list',
+            component:'./list'
         },
         {
             path: '/dashboard',
@@ -29,5 +32,12 @@ export default {
             ]
 
         }],
-    }]
+    }],
+    // proxy: {
+    //     '/dev': {
+    //       target: 'http://jsonplaceholder.typicode.com/posts',
+    //       changeOrigin: true,
+    //       pathRewrite: { "^/dev": "" }
+    //     },
+    //   }
 }
