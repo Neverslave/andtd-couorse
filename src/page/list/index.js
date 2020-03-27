@@ -25,22 +25,18 @@ class index extends Component {
           visible: false,
         });
       }
-      handleOk =()=> {
-        
-           console.log(this.props)
-         }     
-      onf = values => {
+    handleOk = () => {
+        let values = this.formRef.current.getFieldsValue();
         const {dispatch} = this.props;
-        console.log(values)
         dispatch({
-          type: 'cards/addOne',
-          payload: values,
+            type: 'cards/addOne',
+            payload: values,
         });
         // 重置 `visible` 属性为 false 以关闭对话框
         this.setState({
-          visible: false
+            visible: false
         });
-      }
+    }
     columns = [
         {
           title: '名称',
@@ -80,7 +76,7 @@ class index extends Component {
                 cancelText="取消"
                 >
           <Form ref={this.formRef}>
-            <FormItem name ='title' label="名称" rules={[{required:true}]}>
+            <FormItem name ='name' label="名称" rules={[{required:true}]}>
                 <Input  />
             </FormItem>
             <FormItem name = 'desc' label="描述" rules={[{required:true}]}>
