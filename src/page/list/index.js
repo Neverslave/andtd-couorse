@@ -13,6 +13,7 @@ function mapStateToProps(state) {
 
 @connect(mapStateToProps)
 class index extends Component {
+  formRef = React.createRef();
     state={
         visible:false
     }
@@ -24,18 +25,20 @@ class index extends Component {
           visible: false,
         });
       }
-      handleOk = () => {
-        const { dispatch, form: { validateFields } } = this.props;
-      
-        validateFields((err, values) => {
-          if (!err) {
-            dispatch({
-              type: 'cards/addOne',
-              payload: values,
-            });
-            // 重置 `visible` 属性为 false 以关闭对话框
-            this.setState({ visible: false });
-          }
+      handleOk =()=> {
+        
+           console.log(this.props)
+         }     
+      onf = values => {
+        const {dispatch} = this.props;
+        console.log(values)
+        dispatch({
+          type: 'cards/addOne',
+          payload: values,
+        });
+        // 重置 `visible` 属性为 false 以关闭对话框
+        this.setState({
+          visible: false
         });
       }
     columns = [
@@ -68,25 +71,23 @@ class index extends Component {
           <div>
             <Table columns={this.columns} dataSource={cardsList} loading={cardsLoading} rowKey="id" />
                 <Button onClick={this.showModal}>新建</Button>
-                <Modal
-          title="新建记录"
-          visible={visible}
-        >
-          <Form >
-            <FormItem label="名称" rules={[{required:true}]}>
-            
+                <Modal 
+                visible={visible}
+                title="新建记录"
+                onCancel={this.handleCancel}
+                onOk={this.handleOk}
+                okText="确认"
+                cancelText="取消"
+                >
+          <Form ref={this.formRef}>
+            <FormItem name ='title' label="名称" rules={[{required:true}]}>
+                <Input  />
+            </FormItem>
+            <FormItem name = 'desc' label="描述" rules={[{required:true}]}>
                 <Input />
             </FormItem>
-            <FormItem label="描述" rules={[{required:true}]}>
-          
-                <Input />
-           
-            </FormItem>
-            <FormItem label="链接" rules={[{required:true},{type:'url'}]}>
-           
-         
-                <Input />
-            
+            <FormItem label="链接" name='url' rules={[{required:true}]}>
+                <Input  />
             </FormItem>
           </Form>
         </Modal>
