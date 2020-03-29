@@ -2,12 +2,14 @@
 import React, { Component } from 'react';
 import { Table,Modal,Button,Form,Input } from 'antd';
 import { connect } from 'dva';
+import SampleChart from '../charts/SampleCharts';
 const FormItem = Form.Item;
 
 function mapStateToProps(state) {
     return {
       cardsList: state.cards.cardsList,
       cardsLoading: state.loading.effects['cards/queryList'],
+      statistic: state.charts.statistic,
     };
   }
 
@@ -15,7 +17,9 @@ function mapStateToProps(state) {
 class index extends Component {
   formRef = React.createRef();
     state={
-        visible:false
+        visible:false,
+        statisticVisible:false,
+        id:null
     }
     showModal = () => {
         this.setState({ visible: true });
@@ -37,6 +41,25 @@ class index extends Component {
             visible: false
         });
     }
+      //显示图表
+      showStatistic = () => {
+        const {dispatch} = this.props;
+       dispatch({
+          type: 'charts/getStatistic',
+    
+        });
+        // 更新 state，弹出包含图表的对话框
+        this.setState({ statisticVisible: true })
+      };
+    
+      handleStatisticCancel = () => {
+        this.setState({
+          statisticVisible: false,
+        });
+      }
+    
+
+  
     columns = [
         {
           title: '名称',
@@ -51,6 +74,15 @@ class index extends Component {
             dataIndex: 'url',
             render: value => <a href={value}>{value}</a>,
           },
+          {
+            title: '',
+            dataIndex: '_',
+            render: (_, { id }) => {
+              return (
+                <Button onClick={() => { this.showStatistic(); }}>图表</Button>
+              );
+            },
+          },
       ];
 
       componentDidMount() {
@@ -59,10 +91,10 @@ class index extends Component {
         });
       }
       
-      render() {
-        const { cardsList, cardsLoading } = this.props;
-        const { visible } = this.state;
       
+      render() {
+        const { cardsList, cardsLoading,statistic } = this.props;
+        const { visible ,statisticVisible} = this.state;
         return (
           <div>
             <Table columns={this.columns} dataSource={cardsList} loading={cardsLoading} rowKey="id" />
@@ -86,6 +118,10 @@ class index extends Component {
                 <Input  />
             </FormItem>
           </Form>
+        </Modal>
+        <Modal visible={statisticVisible} footer={null} onCancel={this.handleStatisticCancel}>
+        
+        <SampleChart data={statistic} />
         </Modal>
           </div>
         );
